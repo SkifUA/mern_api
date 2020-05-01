@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const placeRoutes = require('./routes/places-rputes')
+const placesRoutes = require('./routes/places-rputes')
 
 const app = express();
 
-app.use(placeRoutes);
+app.use(bodyParser.json());
+
+app.use('/api/places', placesRoutes);
 
 app.use((error, req, res, next) => {
   if (res.headerSent) {
