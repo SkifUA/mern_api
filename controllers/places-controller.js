@@ -78,7 +78,7 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json(createdPlace);
+  res.status(201).json({ place: createdPlace.toObject({ getters: true }) });
 }
 
 // PATCH '/:uid'
@@ -111,7 +111,7 @@ const updatePlace = async (req, res, next) => {
   }
 
 
-  res.status(200).json({ place: place.toString({ getters: true }) });
+  res.status(200).json({ place: place.toObject({ getters: true }) });
 }
 
 // DELETE '/:pid'
