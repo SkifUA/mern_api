@@ -51,14 +51,23 @@ const getPlaceById = async (req, res, next) => {
 };
 
 // GET '/user/:uid'
-const getPlacesByUserId = (req, res, next) => {
+const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  const places = DUMMY_PLACES.filter(p => p.creator === userId);
-  if (!places || places.length === 0) {
-    return next(new HttpError('Could not find places.', 404));
+  let places;
+
+  try {
+    places = await Place.find({ creator: userId });
+  } catch (e) {
+    const error = new HttpError('Something went wrong, Could not find places', 500);
+    return next(error);
   }
 
-  res.json({places})
+  if (!places || places.length === 0) {
+    const error = new HttpError('Could not find places.', 404);
+    return next(error);
+  }
+
+  res.json({ places: places.map(p => p.toObject({ getters: true })) });
 };
 
 // POST '/'
