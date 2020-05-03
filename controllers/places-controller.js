@@ -141,13 +141,23 @@ const updatePlace = async (req, res, next) => {
 }
 
 // DELETE '/:pid'
-const deletePlace = (req, res, next) => {
+const deletePlace = async (req, res, next) => {
   const placeId = req.params.pid;
-  if (!DUMMY_PLACES.find(p => p.creator === userId)) {
-    return next(new HttpError('Could not find place.', 404));
+  let place;
+
+  try {
+    place = await Place.findById(placeId);
+  } catch (e) {
+    const error = new HttpError('Something went wrong, Could not find a place', 500);
+    return next(error);
   }
 
-  DUMMY_PLACES = DUMMY_PLACES.filter(p => p.id !== placeId);
+  try {
+    await place.remove();
+  } catch (e) {
+    const error = new HttpError('Something went wrong, Could not delete a place', 500);
+    return next(error);
+  }
   res.status(200).json({message: 'Deleted place.'})
 }
 
