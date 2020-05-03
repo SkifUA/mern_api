@@ -8,7 +8,7 @@ const placeSchema = new Schema({
   image: { type: String, required: true },
   address: { type: String, required: true },
   location: {
-    lan: { type: String, required: true },
+    lat: { type: String, required: true },
     lng: { type: String, required: true }
   },
   creator: { type: String, required: true }

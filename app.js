@@ -27,7 +27,11 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://manu:Pxswy4LZcLEUIdcF@cluster0-tqkab.mongodb.net/places?retryWrites=true&w=majority')
+  .connect(
+    'mongodb+srv://manu:Pxswy4LZcLEUIdcF@cluster0-tqkab.mongodb.net/places?retryWrites=true&w=majority',
+    {useNewUrlParser: true,
+      useUnifiedTopology: true }
+    )
   .then(() => app.listen(5000))
   .catch( err => {
     console.log(err);
