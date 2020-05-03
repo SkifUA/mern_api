@@ -4,19 +4,21 @@ const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
-let DUMMY_USERS = [
-  {
-    id: "u1",
-    name: "Test User",
-    email: "test@emai.com",
-    password: "12345678"
-  }
-]
+// GET '/api/users/'
+const getUsers = async (req, res, next) => {
+  let users;
 
-const getUsers = (req, res, next) => {
-  res.status(200).json({users: DUMMY_USERS})
+  try {
+    users = await User.find({}, '-password');
+  } catch (e) {
+    const error = new HttpError('Fetching Users filed', 500);
+    return next(error);
+  }
+
+  res.status(200).json({ users: users.map( u => u.toObject({ getters: true })) });
 };
 
+// POST '/api/users/signup'
 const signup = async (req, res, next) => {
   const error = validationResult(req);
   if(!error.isEmpty()) {
@@ -58,6 +60,7 @@ const signup = async (req, res, next) => {
   res.status(201).json({user: createdUser.toObject({ getters: true }) });
 };
 
+// POST '/api/users/login'
 const login = async (req, res, next) => {
   const error = validationResult(req);
   if(!error.isEmpty()) {

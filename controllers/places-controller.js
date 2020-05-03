@@ -6,7 +6,7 @@ const getCoordsForAddress = require('../utils/location');
 const Place = require('../models/place');
 
 
-// GET '/:pid'
+// GET '/api/places/:pid'
 const getPlaceById = async (req, res, next) => {
   const placesId = req.params.pid;
   let place;
@@ -24,7 +24,7 @@ const getPlaceById = async (req, res, next) => {
   res.json({ place: place.toObject({ getters: true }) });
 };
 
-// GET '/user/:uid'
+// GET '/api/places/user/:uid'
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
   let places;
@@ -44,7 +44,7 @@ const getPlacesByUserId = async (req, res, next) => {
   res.json({ places: places.map(p => p.toObject({ getters: true })) });
 };
 
-// POST '/'
+// POST '/api/places/'
 const createPlace = async (req, res, next) => {
   const error = validationResult(req);
   if(!error.isEmpty()) {
@@ -81,7 +81,7 @@ const createPlace = async (req, res, next) => {
   res.status(201).json({ place: createdPlace.toObject({ getters: true }) });
 }
 
-// PATCH '/:uid'
+// PATCH '/api/places/:uid'
 const updatePlace = async (req, res, next) => {
   const error = validationResult(req);
   if(!error.isEmpty()) {
@@ -114,7 +114,7 @@ const updatePlace = async (req, res, next) => {
   res.status(200).json({ place: place.toObject({ getters: true }) });
 }
 
-// DELETE '/:pid'
+// DELETE '/api/places/:pid'
 const deletePlace = async (req, res, next) => {
   const placeId = req.params.pid;
   let place;
